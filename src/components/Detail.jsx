@@ -6,7 +6,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 const Detail = () => {
   const { type, id } = useLocation().state;
   const [detail, setDetail] = useState();
-  const [loading, setLoading] = useState(true);
   const POST_DETAIL = `https://recruit-api.yonple.com/recruit/712984/${type}-posts/${id}`;
   const navigate = useNavigate();
 
@@ -33,7 +32,7 @@ const Detail = () => {
 
   useEffect(() => {
     getDetail();
-  }, [loading]);
+  }, [getDetail]);
 
   return (
     <Container>

@@ -13,6 +13,8 @@ const PostList = (props) => {
   const [ref, inView] = useInView();
   const navigate = useNavigate();
 
+  console.log(inView);
+
   const getList = useCallback(async () => {
     const page = type === "a" ? pageA.current : pageB.current;
     const LIST_URL = `https://recruit-api.yonple.com/recruit/712984/${type}-posts?page=${page}`;
@@ -41,56 +43,58 @@ const PostList = (props) => {
       getList();
       return;
     }
-  }, [type]);
+  }, [type, getList]);
 
   useEffect(() => {
     if (`postList${type.toUpperCase()}.length` !== 0 && inView) {
       console.log("첫 로딩 이후 무한 스크롤");
       getList();
     }
-  }, [inView]);
+  }, [inView, getList, type]);
 
   return (
-    <Container>
-      {type === "a"
-        ? postListA.map((post) => {
-            const { id, title, content, type } = post;
-            return (
-              <Item
-                key={`${type}${id}`}
-                className="item"
-                onClick={() => {
-                  navigate(`/detail/${id}`, { state: { type, id } });
-                }}
-              >
-                <h3 className="title">
-                  <span>{`${id}.`}</span>
-                  <p>{title}</p>
-                </h3>
-                <p className="content">{content}</p>
-              </Item>
-            );
-          })
-        : postListB.map((post) => {
-            const { id, title, content, type } = post;
-            return (
-              <Item
-                key={`${type}${id}`}
-                className="item"
-                onClick={() => {
-                  navigate(`/detail/${id}`, { state: { type, id } });
-                }}
-              >
-                <h3 className="title">
-                  <span>{`${id}.`}</span>
-                  <p>{title}</p>
-                </h3>
-                <p className="content">{content}</p>
-              </Item>
-            );
-          })}
+    <>
+      <Container>
+        {type === "a"
+          ? postListA.map((post) => {
+              const { id, title, content, type } = post;
+              return (
+                <Item
+                  key={`${type}${id}`}
+                  className="item"
+                  onClick={() => {
+                    navigate(`/detail/${id}`, { state: { type, id } });
+                  }}
+                >
+                  <h3 className="title">
+                    <span>{`${id}.`}</span>
+                    <p>{title}</p>
+                  </h3>
+                  <p className="content">{content}</p>
+                </Item>
+              );
+            })
+          : postListB.map((post) => {
+              const { id, title, content, type } = post;
+              return (
+                <Item
+                  key={`${type}${id}`}
+                  className="item"
+                  onClick={() => {
+                    navigate(`/detail/${id}`, { state: { type, id } });
+                  }}
+                >
+                  <h3 className="title">
+                    <span>{`${id}.`}</span>
+                    <p>{title}</p>
+                  </h3>
+                  <p className="content">{content}</p>
+                </Item>
+              );
+            })}
+      </Container>
       <div ref={ref} style={{ position: "absolute" }} />
-    </Container>
+    </>
   );
 };
 

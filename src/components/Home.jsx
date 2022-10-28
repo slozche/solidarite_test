@@ -68,6 +68,7 @@ export default Home;
 const Container = styled.section`
   min-width: 500px;
   max-width: 1000px;
+  height: 100%;
   padding: 35px;
   margin: auto;
 `;
